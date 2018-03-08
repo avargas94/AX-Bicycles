@@ -14,7 +14,8 @@ class Shop():
         self.name = name
         self.inventory = {}
         self.perc_markup = .20
-        self.profit = 0
+        self.sprofit = 0
+        self.tprofit = 0
         
     def create_inventory(self, bicycle, qty):
         self.inventory[bicycle] = qty
@@ -27,18 +28,27 @@ class Shop():
                 current_inventory.append(bicycle)
         return current_inventory
         
+    def check_inventory(self, bike):
+        if self.inventory[bike] != 0:
+            return True
+        else:
+            return False
+        
     def markup(self, c):
         price = c * shop.perc_markup + c 
         return price
         
-    def transaction_profit(self):
-        pass
+    def transaction_profit(self, sale):
+        self.tprofit = shop.markup(sale) - sale 
+        print("AX Bicycles made a profit of ${}".format(self.tprofit))
         
-    def store_profit(self):
-        pass
+    def store_profit(self, sale):
+        self.sprofit += shop.markup(sale) - sale
+        print("Total Sales for the day ${}\n".format(self.sprofit))
         
     def remove_inventory(self, bike):
-        self.inventory -= 1
+        self.inventory[bike] -= 1
+            
         
 class Customer():
     
@@ -61,29 +71,40 @@ class Customer():
         return self.customer_options
         
     def purchase(self):
-        self.customer_selection = input("Please select the bike that you would like to purchase. ")
+        while True:
+            self.customer_selection = input("Please select the bike that you would like to purchase. ")
+            self.customer_selection = self.customer_selection.upper()
         
-        if self.customer_selection == "HIGHTOWER CC 29 XO":
-            self.sold = bike1
-        elif self.customer_selection == "SIRRUS EXPERT CARBON X1":
-            self.sold = bike2
-        elif self.customer_selection == "AMERICANO ROHLOFF 56CM BLACK":
-            self.sold = bike3
-        elif self.customer_selection == "DOMANE ALR 3":
-            self.sold = bike4
-        elif self.customer_selection == "DOMANE SLR 6 DISC":
-            self.sold = bike5
-        elif self.customer_selection == "SILQUE S 7":
-            self.sold = bike6
-        else:
-            print("We don't have the bike in stock!")
-        print("\n")    
-        print("{name} you have purchase the {model} for ${price}. You have ${remaining} remaining in your wallet!".format(name=self.name, model=self.sold.model, price=shop.markup(self.sold.price), remaining=self.money-shop.markup(self.sold.price)))
-        
-        shop.remove_inventory(self.sold.model)
-        shop.calcuate_profit()
-        shop.total_profit()
-        
+            if self.customer_selection == "HIGHTOWER CC 29 XO":
+                self.sold = bike1
+            elif self.customer_selection == "SIRRUS EXPERT CARBON X1":
+                self.sold = bike2
+            elif self.customer_selection == "AMERICANO ROHLOFF 56CM BLACK":
+                self.sold = bike3
+            elif self.customer_selection == "DOMANE ALR 3":
+                self.sold = bike4
+            elif self.customer_selection == "DOMANE SLR 6 DISC":
+                self.sold = bike5
+            elif self.customer_selection == "SILQUE S 7":
+                self.sold = bike6
+            else:
+                print("We don't have the bike in stock!")
+            
+            if shop.check_inventory(self.sold):
+                if self.sold.price < self.money:   
+                    print("\n")    
+                    print("{name} you have purchase the {model} for ${price}. You have ${remaining} remaining in your wallet!\n".format(name=self.name, model=self.sold.model, price=shop.markup(self.sold.price), remaining=self.money-shop.markup(self.sold.price)))
+                    
+                    shop.remove_inventory(self.sold)
+                    shop.transaction_profit(self.sold.price)
+                    shop.store_profit(self.sold.price)
+                    return
+                else:
+                    print("You have selected a bicycle that is out side your price range.")
+                    continue
+            else: 
+                print("We no longer have that in stock! Please select one that we have in stock.")
+    
 if __name__ == "__main__":
     
     ryan = Customer("Ryan", 200)
@@ -116,15 +137,26 @@ if __name__ == "__main__":
         print("Weight: {}".format(bicycle.weight))
     print("\n")
     
-    print("Welcome {name}! {name}'s budget is ${money}\n".format(name=andrew.name, money=andrew.money))
-    
+    print("{name}'s budget is ${money}\n".format(name=andrew.name, money=andrew.money))
     for bicycle in shop.show_inventory():
         andrew.budget(bicycle)
     for bike in andrew.selection():
         print(bike)
-        
     andrew.purchase()
- 
+    
+    print("{name}'s budget is ${money}\n".format(name=ryan.name, money=ryan.money))
+    for bicycle in shop.show_inventory():
+        ryan.budget(bicycle)
+    for bike in ryan.selection():
+        print(bike)
+    ryan.purchase()
+    
+    print("{name}'s budget is ${money}\n".format(name=dante.name, money=dante.money))
+    for bicycle in shop.show_inventory():
+        dante.budget(bicycle)
+    for bike in dante.selection():
+        print(bike)
+    dante.purchase()
         
     
     
