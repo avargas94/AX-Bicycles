@@ -16,6 +16,7 @@ if __name__ == "__main__":
     bike4 = Bicycles("DOMANE ALR 3", 25, 250)
     bike5 = Bicycles("DOMANE SLR 6 DISC", 15, 100)
     bike6 = Bicycles("SILQUE S 7", 15, 150)
+    bikes = [bike1, bike2, bike3, bike4, bike5, bike6]
     
     shop.create_inventory(bike1, 1)
     shop.create_inventory(bike2, 1)
@@ -34,21 +35,21 @@ if __name__ == "__main__":
     
     print("{name}'s budget is ${money}\n".format(name=andrew.name, money=andrew.money))
     for bicycle in shop.show_inventory():
-        andrew.budget(bicycle)
+        andrew.budget(bicycle, shop)
     for bike in andrew.selection():
         print(bike)
-    andrew.purchase()
+    andrew.purchase(shop, bikes)
     
     print("{name}'s budget is ${money}\n".format(name=ryan.name, money=ryan.money))
     for bicycle in shop.show_inventory():
-        ryan.budget(bicycle)
+        ryan.budget(bicycle, shop)
     for bike in ryan.selection():
         print(bike)
-    ryan.purchase()
+    ryan.purchase(shop, bikes)
     
     print("{name}'s budget is ${money}\n".format(name=dante.name, money=dante.money))
     for bicycle in shop.show_inventory():
-        dante.budget(bicycle)
+        dante.budget(bicycle, shop)
     for bike in dante.selection():
         print(bike)
-    dante.purchase()
+    dante.purchase(shop, bikes)

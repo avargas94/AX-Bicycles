@@ -35,15 +35,15 @@ class Shop():
             return False
         
     def markup(self, c):
-        price = c * shop.perc_markup + c 
+        price = c * self.perc_markup + c 
         return price
         
     def transaction_profit(self, sale):
-        self.tprofit = shop.markup(sale) - sale 
+        self.tprofit = self.markup(sale) - sale 
         print("AX Bicycles made a profit of ${}".format(self.tprofit))
         
     def store_profit(self, sale):
-        self.sprofit += shop.markup(sale) - sale
+        self.sprofit += self.markup(sale) - sale
         print("Total Sales for the day ${}\n".format(self.sprofit))
         
     def remove_inventory(self, bike):
@@ -60,7 +60,7 @@ class Customer():
         self.customer_selection = None
         self.sold = None
         
-    def budget(self, bicycle):
+    def budget(self, bicycle, shop):
         if shop.markup(bicycle.price) <= self.money:
             self.bike_budget.append(bicycle)
             
@@ -70,8 +70,16 @@ class Customer():
             self.customer_options.append(bicycle.model)
         return self.customer_options
         
-    def purchase(self):
+    def purchase(self, shop, bike):
         while True:
+            
+            bike1 = bike[0]
+            bike2 = bike[1]
+            bike3 = bike[2]
+            bike4 = bike[3]
+            bike5 = bike[4]
+            bike6 = bike[5]
+            
             self.customer_selection = input("Please select the bike that you would like to purchase. ")
             self.customer_selection = self.customer_selection.upper()
         
@@ -104,61 +112,7 @@ class Customer():
                     continue
             else: 
                 print("We no longer have that in stock! Please select one that we have in stock.")
-    
-if __name__ == "__main__":
-    
-    ryan = Customer("Ryan", 200)
-    andrew  = Customer("Andrew", 500)
-    dante = Customer("Dante", 1000)
-    
-    shop = Shop("AX Bicycles")
-    
-    print("Welcome to {}".format(shop.name))
-    
-    bike1 = Bicycles("HIGHTOWER CC 29 XO", 20, 800)
-    bike2 = Bicycles("SIRRUS EXPERT CARBON X1", 25, 450)
-    bike3 = Bicycles("AMERICANO ROHLOFF 56CM BLACK", 24, 350)
-    bike4 = Bicycles("DOMANE ALR 3", 25, 250)
-    bike5 = Bicycles("DOMANE SLR 6 DISC", 15, 100)
-    bike6 = Bicycles("SILQUE S 7", 15, 150)
-    
-    shop.create_inventory(bike1, 1)
-    shop.create_inventory(bike2, 1)
-    shop.create_inventory(bike3, 1)
-    shop.create_inventory(bike4, 1)
-    shop.create_inventory(bike5, 1)
-    shop.create_inventory(bike6, 1)
-    
-    print('Here are the bicycles that we carry!\n')
-    
-    for bicycle in shop.inventory:
-        print("Model: {}".format(bicycle.model))
-        print("Price: ${}".format(shop.markup(bicycle.price)))
-        print("Weight: {}".format(bicycle.weight))
-    print("\n")
-    
-    print("{name}'s budget is ${money}\n".format(name=andrew.name, money=andrew.money))
-    for bicycle in shop.show_inventory():
-        andrew.budget(bicycle)
-    for bike in andrew.selection():
-        print(bike)
-    andrew.purchase()
-    
-    print("{name}'s budget is ${money}\n".format(name=ryan.name, money=ryan.money))
-    for bicycle in shop.show_inventory():
-        ryan.budget(bicycle)
-    for bike in ryan.selection():
-        print(bike)
-    ryan.purchase()
-    
-    print("{name}'s budget is ${money}\n".format(name=dante.name, money=dante.money))
-    for bicycle in shop.show_inventory():
-        dante.budget(bicycle)
-    for bike in dante.selection():
-        print(bike)
-    dante.purchase()
-        
-    
+
     
 
     
